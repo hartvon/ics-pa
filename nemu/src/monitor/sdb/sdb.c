@@ -54,14 +54,24 @@ static int cmd_q(char *args) {
 }
 
 static int cmd_si(char *args) {
-  // char* arg = strtok(NULL, " ");
-  // unsigned long steps;
+  char* arg = strtok(NULL, " ");
+  unsigned long steps;
 
-  // if (arg == NULL) {
-  //   steps = 1;
-  // } else {
-  // }
-  TODO();
+  if (arg == NULL) {
+    steps = 1;
+  } else {
+    arg = strtok(NULL, " ");
+    steps = strtoull(arg, NULL, 10);
+
+    if (steps == 0 || steps == UINT64_MAX) {
+      printf("Unsupported argument: %s\n", arg);
+      return 0;
+    }
+  }
+
+  cpu_exec(steps);
+
+  return 0;
 }
 
 static int cmd_help(char *args);

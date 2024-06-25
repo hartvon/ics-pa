@@ -15,6 +15,16 @@
 
 ifneq ($(CONFIG_ITRACE)$(CONFIG_IQUEUE),)
 CXXSRC = src/utils/disasm.cc
-CXXFLAGS += $(shell llvm-config --cxxflags) -fPIE
-LIBS += $(shell llvm-config --libs)
+DIST_VER := $(shell lsb_release -sr)
+
+ifeq ($(DIST_VER),22.04)
+	CXXFLAGS += $(shell llvm-config --cxxflags) -fPIE
+	LIBS += $(shell llvm-config --libs)
+endif
+
+ifeq ($(DIST_VER),20.04)
+	CXXFLAGS += $(shell llvm-config-11 --cxxflags) -fPIE
+	LIBS += $(shell llvm-config-11 --libs)
+endif
+
 endif
