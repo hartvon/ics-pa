@@ -87,7 +87,7 @@ static int cmd_info(char *args) {
   }
 
   if (strcmp(arg, "w") == 0) {
-    ;
+    TODO();
   }
 
   return 0;
@@ -112,7 +112,7 @@ static int cmd_scan(char* args) {
   for (; n > 0; n--) {
     word_t bytes = vaddr_read(vaddr, 4);
     vaddr += 4;
-    printf("0x%x\r", bytes);
+    printf("0x%x  ", bytes);
   }
   printf("\n");
 
