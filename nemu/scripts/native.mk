@@ -19,8 +19,7 @@ include $(NEMU_HOME)/scripts/build.mk
 include $(NEMU_HOME)/tools/difftest.mk
 
 compile_git:
-	$(NOOP)
-	# $(call git_commit, "compile NEMU")
+	$(call git_commit, "compile NEMU")
 $(BINARY):: compile_git
 
 # Some convenient rules
