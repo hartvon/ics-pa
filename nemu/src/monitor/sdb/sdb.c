@@ -60,7 +60,6 @@ static int cmd_si(char *args) {
   if (arg == NULL) {
     steps = 1;
   } else {
-    arg = strtok(NULL, " ");
     steps = strtoull(arg, NULL, 10);
 
     if (steps == 0 || steps == UINT64_MAX) {
