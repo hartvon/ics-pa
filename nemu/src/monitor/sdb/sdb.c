@@ -55,20 +55,38 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
   char* arg = strtok(NULL, " ");
-  unsigned long steps;
 
   if (arg == NULL) {
-    steps = 1;
-  } else {
-    steps = strtoull(arg, NULL, 10);
-
-    if (steps == 0 || steps == UINT64_MAX) {
-      printf("Unsupported argument: %s\n", arg);
-      return 0;
-    }
+    cpu_exec(1);
+    return 0;
   }
 
+  unsigned long steps = strtoull(arg, NULL, 10);
+
+  if (steps == 0 || steps == UINT64_MAX) {
+    printf("Unsupported argument: %s\n", arg);
+    return 0;
+  }
   cpu_exec(steps);
+
+  return 0;
+}
+
+static int cmd_info(char *args) {
+  char* arg = strtok(NULL, " ");
+
+  if (arg == NULL) {
+    printf("Leak of required argument: r/w\n");
+    return 0;
+  }
+
+  if (strcmp(arg, "r") == 0) {
+    isa_reg_display();
+  }
+
+  if (strcmp(arg, "w") == 0) {
+    ;
+  }
 
   return 0;
 }
@@ -83,10 +101,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "STEP INST", cmd_si },
-
-  /* TODO: Add more commands */
-
+  { "si", "STEP instructions", cmd_si },
+  { "info", "SHOW reg/wp INFO", cmd_info }
 };
 
 #define NR_CMD ARRLEN(cmd_table)
