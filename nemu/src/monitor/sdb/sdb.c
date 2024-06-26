@@ -15,6 +15,8 @@
 
 #include <isa.h>
 #include <cpu/cpu.h>
+#include <memory/vaddr.h>
+#include <memory/paddr.h>
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
@@ -91,6 +93,32 @@ static int cmd_info(char *args) {
   return 0;
 }
 
+static int cmd_scan(char* args) {
+  char* arg_n = strtok(NULL, " ");
+  unsigned long n = strtoul(arg_n, NULL, 10);
+  if (n == 0 || n == UINT64_MAX) {
+    printf("Unsupported argument: %s\n", arg_n);
+    return 0;
+  }
+
+  char* arg_addr = strtok(NULL, " ");
+  vaddr_t vaddr;
+  sscanf(arg_addr, "%x", &vaddr);
+  if (vaddr < PMEM_LEFT || vaddr > PMEM_RIGHT) {
+    printf("OOM: %x\n", vaddr);
+    return 0;
+  }
+
+  for (; n > 0; n--) {
+    word_t bytes = vaddr_read(vaddr, 4);
+    vaddr += 4;
+    printf("0x%x\r", bytes);
+  }
+  printf("\n");
+
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -102,7 +130,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "STEP instructions", cmd_si },
-  { "info", "SHOW reg/wp INFO", cmd_info }
+  { "info", "SHOW reg/wp INFO", cmd_info },
+  { "x", "SCAN value pointed", cmd_scan },
 };
 
 #define NR_CMD ARRLEN(cmd_table)
