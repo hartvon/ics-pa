@@ -122,16 +122,16 @@ static void make_token(char *e) {
 //     *success = false;
 //     return 0;
 //   }
-// 
+//
 //   /* TODO: Insert codes to evaluate the expression. */
 //   TODO();
-// 
+//
 //   return 0;
 // }
 
 
 int main() {
-  char expr[] = "4 + 3";
+  char expr[] = "(43124 + 3 - 1) * 10 / 2";
 
   init_regex();
   make_token(expr);

@@ -99,13 +99,13 @@ static bool make_token(char *e) {
          * to record the token in the array `tokens'. For certain types
          * of tokens, some extra actions should be performed.
          */
-        tokens[i].type = rules[i].token_type;
-        strncpy(tokens[i].str, substr_start, substr_len);
+        tokens[nr_token].type = rules[i].token_type;
+        strncpy(tokens[nr_token].str, substr_start, substr_len);
         ++nr_token;
 
-        switch (rules[i].token_type) {
-          default: TODO();
-        }
+        // switch (rules[i].token_type) {
+        //   default: TODO();
+        // }
 
         break;
       }
@@ -120,12 +120,43 @@ static bool make_token(char *e) {
   return true;
 }
 
+bool check_parentheses(char* e, uint32_t p, uint32_t q) {
+  if (!e || p >= q) {
+    return false;
+  }
+
+  uint32_t len = strlen(e);
+  uint32_t count = 0;
+  while (p < q) {
+    if (e[p] == '(') {
+      ++count;
+    }
+    else if (e[q])
+  }
+}
+
+
+uint32_t eval(char* e, uint32_t len, uint32_t p, uint32_t q) {
+  if (p > q) {
+    return 0;
+  }
+  else if (p == q) {
+
+  }
+
+}
+
+// tokens | type:str
 
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
+
+  uint32_t p = 0, q = 0;
+  uint32_t len = strlen(e);
+
 
   /* TODO: Insert codes to evaluate the expression. */
   TODO();

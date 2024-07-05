@@ -31,11 +31,20 @@ char* reg_match(char* holder, const char* pattern) {
     return matched_substr;
 }
 
-int main(int argc, char *argv[]) {
-
+void test_reg_match() {
     char holder[] = "abc 123 def";
     const char* pattern = "^[a-z]+\\s[0-9]+";
     printf("-%s\n", reg_match(holder, pattern));
+}
+
+void test_common() {
+    char str[] = "hello";
+    printf("%lu, %lu\n", strlen(str), sizeof(str));
+}
+
+int main(int argc, char *argv[]) {
+    // test_reg_match();
+    test_common();
 
     return 0;
 }
