@@ -120,30 +120,47 @@ static bool make_token(char *e) {
   return true;
 }
 
-bool check_parentheses(char* e, uint32_t p, uint32_t q) {
-  if (!e || p >= q) {
-    return false;
+bool check_parentheses(uint32_t p, uint32_t q) {
+  if (tokens[p].type != '(' || tokens[q].type != ')') {
+      return false;
   }
 
-  uint32_t len = strlen(e);
-  uint32_t count = 0;
-  while (p < q) {
-    if (e[p] == '(') {
-      ++count;
-    }
-    else if (e[q])
+  int count = 0;
+  for (uint32_t i = p + 1; i <= q - 1; i++) {
+      if (tokens[i].type == '(') {
+          count++;
+      }
+      else if (tokens[i].type == ')') {
+          if (count == 0) return false;
+          count--;
+      }
   }
+
+  return count == 0;
 }
 
+uint32_t find_major(char* e) {
+  TODO();
+}
 
-uint32_t eval(char* e, uint32_t len, uint32_t p, uint32_t q) {
+word_t eval(int p, int q, bool* success) {
   if (p > q) {
+    *success = false;
     return 0;
   }
   else if (p == q) {
-
+    if (tokens[p].type != TK_DEC) {
+      *success = false;
+      return 0;
+    }
+    return strtoul(tokens[p].str, NULL, 10);
   }
-
+  else if (check_parentheses(p, q)) {
+    return eval(p + 1, q - 1, success);
+  }
+  else {
+    TODO();
+  }
 }
 
 // tokens | type:str
@@ -154,12 +171,7 @@ word_t expr(char *e, bool *success) {
     return 0;
   }
 
-  uint32_t p = 0, q = 0;
-  uint32_t len = strlen(e);
-
-
-  /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  return eval(0, nr_token - 1, success);
 
   return 0;
 }
